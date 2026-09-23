@@ -76,5 +76,4 @@ python src/analyze.py        # produces 5 charts in notebooks/figures/
 - Explore pose-estimation on fight footage (Project 3)
 
 ## About Me
-I bring a fighter's perspective to this analysis — [one line about your
-own fighting background / why this data matters to you].
+I bring a fighter's perspective to this analysis because I have been practicing and competing Muay Thai for the past 8 years and I'm currently competing professionally. I have high passion in fighting sports and having this passion certainly helps me in regards of analying combat sports data, understanding the issues presented and designing an appropriate solution.
