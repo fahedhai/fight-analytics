@@ -1,6 +1,6 @@
 # Muay Thai / Combat Sports Fight Analytics
 
-**Author:** [Your Name] — Professional Muay Thai fighter & IT/Data Science student
+**Author:** Fahed Haidar — Professional Muay Thai fighter & IT/Data Science student
 
 ## Overview
 As a professional Muay Thai fighter, I wanted to see whether the striking
