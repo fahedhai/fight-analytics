@@ -137,3 +137,174 @@ given two fighters' pre-fight career stats, can we predict who wins?
 python src/build_features.py   # produces data/model_features.csv
 python src/train_model.py      # produces model comparison + feature importance charts
 ```
+
+
+Visual Studio Code 1.139
+
+Show release notes after an update
+
+Follow us on LinkedIn, X, Bluesky, Instagram | View online
+
+Release date: September 23, 2026
+
+Update 1.139.1: The update addresses these issues.
+
+Already installed? Use Check for Updates in VS Code. For upcoming features, use the Insiders build.
+
+Release highlights
+This release makes large agent session lists faster, extends Dev Container support to remote projects, and improves everyday editing.
+
+Remote Dev Container sessions: Run agents inside your project's Dev Container on SSH, Tunnel, and WSL hosts.
+
+Session list improvements: Load large session lists faster, fit more sessions on screen, and in-place session renaming.
+
+Editor experience: Identify wrapped lines at a glance and avoid duplicate closing brackets as you type.
+
+Happy Coding!
+
+In this update
+Release highlights
+Agents
+Chat
+Editor experience
+Proposed APIs
+Deprecated features and settings
+Notable fixes
+Thank you
+Agents
+The agent host runs agent harnesses in a dedicated process based on the Agent Host Protocol (AHP), so you can connect to the same session from multiple VS Code windows. Learn more about its architecture and workflows in the agent host blog post.
+
+Run agent sessions in Dev Containers on remote hosts
+Setting: chat.agentHost.devContainer.enabled (Agents Window only)
+
+Let agents build and test your remote project with the right tools and dependencies, without duplicating toolchain setup on your laptop or the remote host. This release extends Dev Container sessions from local folders to projects on SSH, Tunnel, and WSL hosts.
+
+To get started, enable chat.agentHost.devContainer.enabled and select Use Dev Container from the folder menu in the Agents Window. The remote folder must have a supported Dev Container configuration, and Docker must be available on the remote host.
+
+Note: Dev Container sessions are rolling out gradually, so the setting might not be enabled by default for you yet. You can enable the setting manually to try the feature now.
+
+Faster session list loading
+VS Code loads and refreshes large agent session lists faster. The agent host keeps lightweight session and chat metadata in a central catalog instead of opening every conversation database each time the list is built. Full conversation content remains isolated in the individual session and chat databases.
+
+The improvement grows with the number of sessions because the previous approach did work in proportion to your session count. Measured with around 645 sessions on a development machine:
+
+Operation	Before	After	Improvement
+First session listing after launch	1.3 seconds	0.1 seconds	About 12x faster
+Refresh the session list	0.6 seconds	0.15 seconds	About 4x faster
+If you have few sessions, expect a smaller difference. Sessions created before this release are migrated automatically in the background.
+
+Compact sessions list
+Fit more sessions in the sessions list by enabling Compact View in the sessions list view of the Agents Window.
+
+Compact rows show the session title at rest and reveal workspace details when you hover over or focus the row. A row expands when the session needs input or approval, so these requests remain visible.
+
+Progress also appears on the row for the chat that owns the work. When you collapse a session, the parent row summarizes progress from its hidden chats.
+
+
+Filter empty session groups
+Disable Empty Groups from Filter Sessions to hide empty custom groups and the empty Chats section. This preference is stored in your profile and resets with the other sessions list filters.
+
+Rename sessions and chats in place
+Rename a session or nested chat directly in the sessions list. Double-click its title, use the Rename context menu action, or focus the row and press sessions.sessionHeader.rename for a session or sessions.chatCompositeBar.renameChat for a nested chat. Inline validation prevents blank titles, and canceling restores the previous title.
+
+Choose how chats appear in a session (Preview)
+Setting: sessions.showChatTabs (Agents Window only)
+
+An agent session can contain multiple chats, each representing a different conversation or context. When a session contains multiple chats, choose the presentation that best fits your workflow from the session header menu:
+
+Multiple shows each chat on its own tab.
+Single shows only the active chat and hides the tab bar.
+Switching presentations preserves your open chats, active chat, and conversation state. In Single mode, chats that you explicitly open to the side remain independent panes with their own header actions.
+
+
+Chat
+Pet naming contest update (Experimental)
+Thank you to everyone who submitted a name for the VS Code pet. The naming contest closed on September 17, 2026, and we're reviewing the eligible entries. We'll announce the winner and the pet's new name soon.
+
+While you wait, enter /vscode-pet in chat to meet your companion and explore all its interactions and reactions.
+
+Editor experience
+Word wrap indicators
+Display word wrap indicators to make wrapped lines easier to identify. An arrow at the word wrap column on the right side of the editor indicates that a line wraps.
+
+Screenshot showing word wrap indicators in the editor.
+
+Improved bracket auto-closing behavior
+VS Code avoids inserting duplicate closing brackets when you type an opening bracket. If a matching closing bracket exists, VS Code uses it. Otherwise, VS Code inserts one.
+
+
+Proposed APIs
+Access token lifetime on authentication sessions
+AuthenticationSession exposes an access token but no information about how long that token stays valid. An extension that passes a credential to an SDK with its own refresh callback cannot distinguish between a token that never expires and one that is about to expire. As a result, the extension either refreshes the credential unnecessarily or lets a long-running operation fail when the token expires.
+
+The authSessionExpiration proposal adds an optional expiresAfter property to AuthenticationSession:
+
+export interface AuthenticationSession {
+  /**
+   * The access token's remaining lifetime, in milliseconds, when the authentication
+   * provider returns the session.
+   */
+  readonly expiresAfter?: number;
+}
+
+The value is the remaining lifetime when the session is returned rather than an absolute expiration timestamp. The extension host can run on a different machine than the client, and the two clocks can disagree. Authentication providers that return a cached session recompute the value each time and leave it undefined when the token's expiration is unknown. The built-in Microsoft account provider supplies this value.
+
+Try it out and let us know what you think in the API proposal issue. To learn how to build against a proposal, see using proposed APIs.
+
+Deprecated features and settings
+Linux desktop launcher names
+If a pinned launcher stops working after updating to version 1.139, remove it and add the application again from your desktop's application menu.
+
+The Linux DEB and RPM packages now use reverse-DNS desktop file names to align with the application's desktop identity. For the Stable packages, the files in /usr/share/applications/ are renamed as follows:
+
+Previous name	New name
+code.desktop	com.microsoft.VSCode.desktop
+code-url-handler.desktop	com.microsoft.VSCode.UrlHandler.desktop
+Existing favorites, pinned launchers, and custom references to the old names are not updated automatically. On KDE Plasma, a stale favorite can report "You are not authorized to execute this file" even though this is a missing desktop file, not a permissions problem.
+
+Remove the old favorite or pinned launcher, then add the application again from the application menu. On KDE Plasma, use Remove From Favorites on the old entry, then Add to Favorites on the entry under Applications > Development.
+Update custom shortcuts and scripts that reference the old desktop file names.
+If you explicitly configured file or URL associations using the old IDs, select the application again in your desktop's default-application settings.
+You can still start the application from a terminal with code. Reinstalling the package does not update saved references to the old names.
+
+Notable fixes
+For users whose organization disables Agent mode by account policy, ensure the Welcome invitation opening is hidden and that alternative methods of launching the disabled Agents Window (for example, code --agents disallow circumvention of the control). #336968: Fix account policy enforcement in the Agents window
+
+For users with enterprise-managed OpenTelemetry (OTel) settings, fix a race condition in the configuration of OTel in the Local (i.e. non-Agent Host Harness) to ensure OTel is not dropped. #336701: Fix Enterprise Managed OTel Race in Copilot Extension
+
+Thank you
+Contributions to vscode:
+
+@AnupamKumar-1 (Anupam Kumar): fix(chat): preserve #file reference when editing text before it PR #333965
+@baywet (Vincent Biret): feat: adds the default openapi file match for the JSON extension PR #336273
+@brandonh-msft (Brandon H): Fix remote chat plugin paths PR #326916
+@brignano (anthony): github-authentication: skip education.github.com check for EMU accounts PR #336608
+@Chirag-Bhardwaj (Chirag Bhardwaj): Fix clearing custom terminal titles PR #336599
+@dobbydobap (varshitha): Show active editor language first in Configure Snippets PR #324369
+@emxs1 (Emma): add more fun working messages PR #335600
+@jlelong (Jerome Lelong): Latex : update language configuration PR #332303
+@joltcoke (Florian Schirmer): Guard navigator.clipboard in the WebKit clipboard workaround PR #334878
+@joshspicer: Fix permission bits in mock-policy-server file commands PR #334382
+@Muszic (Sangeet): Add upstream Cargo completion spec for terminal suggestions PR #305309
+@SimonSiefke (Simon Siefke)
+fix: memory leak in document drop edits PR #336025
+fix: memory leak in dialog main service PR #336019
+fix: memory leak in notebook attachment diagnostics PR #333383
+fix: memory leak in signature help PR #336020
+fix: memory leak in extension host hierarchy PR #336023
+fix: memory leak in issueReporterOverlay PR #335102
+fix: memory leak in workspace symbols PR #336029
+fix: memory leak in extension host speech PR #336021
+fix: memory leak in notification action view items PR #333340
+@yoavbls (Yoav Balasiano): Allow display:inline-block on spans style PR #180498
+Issue tracking
+Contributions to our issue tracking:
+
+@gjsjohnmurray (John Murray)
+@RedCMD (RedCMD)
+@IllusionMH (Andrii Dieiev)
+@albertosantini (Alberto Santini)
+We really appreciate people trying our new features as soon as they are ready, so check back here often and learn what's new.
+
+If you'd like to read release notes for previous VS Code versions, go to Updates on code.visualstudio.com.
+
