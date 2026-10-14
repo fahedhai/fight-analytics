@@ -44,6 +44,10 @@ The system:
 - Generates an annotated video showing the tracked glove and detected strikes.
 - Exports summary results as a JSON file, including strike count, duration and strikes per minute.
 
+### Glove Tracking Results
+
+![Glove Speed Chart](notebooks/figures/glove_speed_chart.png)
+
 ### Approach
 
 Rather than relying on a large pre-trained pose-estimation model, the project uses colour-based glove tracking. Temporal continuity is used to prefer detections close to the glove's previous position, reducing the likelihood of switching to another red object in the frame.
@@ -91,6 +95,28 @@ python src/analyze.py        # produces 5 charts in notebooks/figures/
 3. How is fighter age distributed, and does win rate decline with age?
 4. Where do strikes actually land — head, body, or leg?
 
+## Data Analysis Visualisations
+
+### Win Rate by Stance
+
+![Win Rate by Stance](notebooks/figures/winrate_by_stance.png)
+
+### Striking Accuracy by Stance
+
+![Striking Accuracy by Stance](notebooks/figures/accuracy_by_stance.png)
+
+### Age and Win Rate
+
+![Age Distribution and Win Rate](notebooks/figures/age_distribution_and_winrate.png)
+
+### Reach vs Striking Output
+
+![Reach vs Striking Output](notebooks/figures/reach_vs_striking_output.png)
+
+### Strike Target Distribution
+
+![Strike Target Breakdown](notebooks/figures/strike_target_breakdown.png)
+
 ## Key Findings
 - **Southpaws and switch fighters win slightly more often than orthodox fighters**
   (~51.7% vs ~48.6% win rate). This lines up with the common "southpaw advantage"
@@ -134,7 +160,7 @@ This project allows me to combine two areas I am passionate about: combat sports
 
 ---
 
-# Project 2: Fight Outcome Prediction
+## Machine Learning — Fight Outcome Prediction
 
 ## Overview
 Building on Project 1, this extends the analysis into a predictive model:
@@ -159,6 +185,18 @@ given two fighters' pre-fight career stats, can we predict who wins?
 | Logistic Regression | 0.664 | 0.638 |
 | Random Forest | 0.663 | 0.657 |
 | **Gradient Boosting** | **0.678** | **0.675** |
+
+### Model Performance
+
+![Model Comparison](notebooks/figures/model_comparison.png)
+
+### Feature Importance
+
+![Feature Importance](notebooks/figures/feature_importance.png)
+
+### Confusion Matrix
+
+![Confusion Matrix](notebooks/figures/confusion_matrix.png)
 
 ## Key Findings
 - **Age difference is the single strongest predictor** — this lines up
