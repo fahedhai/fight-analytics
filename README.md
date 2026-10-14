@@ -15,16 +15,42 @@ The project combines data cleaning, exploratory data analysis, feature engineeri
 - NumPy
 - Matplotlib
 - Seaborn
+- Scikit-learn
+- OpenCV
 - Jupyter Notebook
 - Streamlit
-- Scikit-learn
+- Git & GitHub
   
-## Overview
+## Exploratory Data Analysis
 As a professional Muay Thai fighter, I wanted to see whether the striking
 and physical data behind fighters actually backs up conventional fight
 wisdom — does reach really matter, does stance affect striking accuracy,
 how does age relate to performance? This project explores those questions
 using UFC fighter and fight data as a proxy for striking-based combat sports.
+
+## Computer Vision — Glove Tracking
+
+As an extension of the fight analytics project, I developed a computer vision system to track a red boxing/Muay Thai glove through video footage.
+
+The system:
+
+- Uses OpenCV to process video frames.
+- Converts frames to HSV colour space.
+- Detects red regions using colour segmentation.
+- Uses contour detection to identify potential glove locations.
+- Tracks the glove across consecutive frames.
+- Calculates glove movement speed in pixels per second.
+- Detects potential strikes using movement-speed peaks.
+- Generates an annotated video showing the tracked glove and detected strikes.
+- Exports summary results as a JSON file, including strike count, duration and strikes per minute.
+
+### Approach
+
+Rather than relying on a large pre-trained pose-estimation model, the project uses colour-based glove tracking. Temporal continuity is used to prefer detections close to the glove's previous position, reducing the likelihood of switching to another red object in the frame.
+
+### Limitations
+
+The current approach is designed for red gloves and can be affected by other red objects in the video. It tracks the glove rather than the full body or skeleton, so it does not yet analyse technique, punch type or body mechanics.
 
 ## Data
 Source: [UFC-Fight Historical Data From 1993 To 2021](https://www.kaggle.com/datasets/rajeevw/ufcdata) (Kaggle, rajeevw)
@@ -39,16 +65,18 @@ makes fighter-level questions (win rate by stance, by age, etc.) much easier
 to answer.
 
 ## Project Structure
-```
+
 muaythai-fight-analytics/
-├── data/               # raw and cleaned CSVs (not committed if large)
-├── notebooks/          # exploratory Jupyter notebooks + generated figures
+├── data/                    # raw and processed datasets
+├── notebooks/               # exploratory notebooks and generated figures
 ├── src/
-│   ├── clean_data.py   # cleans raw CSVs into tidy format
-│   └── analyze.py      # generates exploratory charts
+│   ├── clean_data.py       # cleans and reshapes fight data
+│   ├── analyze.py          # exploratory data analysis
+│   ├── build_features.py   # creates machine learning features
+│   ├── train_model.py      # trains and evaluates ML models
+│   └── glove_tracker.py    # computer vision glove tracking
 ├── requirements.txt
 └── README.md
-```
 
 ## How to Run
 ```bash
@@ -87,10 +115,14 @@ python src/analyze.py        # produces 5 charts in notebooks/figures/
   scoring/finishing incentives (head strikes are more likely to end a fight)
   rather than technical striking priorities in a pure striking sport like Muay Thai.
 
-## What I'd Improve Next
-- ~~Extend to fight-outcome prediction (Project 2)~~ Done, see below
-- Bring in Muay Thai-specific domain knowledge to interpret striking metrics
-- Explore pose-estimation on fight footage (Project 3)
+## Future Improvements
+
+- Improve the fight outcome model by addressing class imbalance.
+- Remove Red/Blue corner bias by creating a symmetric Fighter A vs Fighter B model.
+- Add recent-form features such as performance across the last 3 fights.
+- Improve glove tracking to handle different glove colours and backgrounds.
+- Explore pose estimation to analyse full-body movement and striking technique.
+- Investigate additional Muay Thai-specific performance metrics.
 
 ## About Me
 
@@ -159,10 +191,4 @@ python src/build_features.py   # produces data/model_features.csv
 python src/train_model.py      # produces model comparison + feature importance charts
 ```
 
-
-@IllusionMH (Andrii Dieiev)
-@albertosantini (Alberto Santini)
-We really appreciate people trying our new features as soon as they are ready, so check back here often and learn what's new.
-
-If you'd like to read release notes for previous VS Code versions, go to Updates on code.visualstudio.com.
 
