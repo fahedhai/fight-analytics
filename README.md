@@ -2,15 +2,11 @@
 
 **Author:** Fahed Haidar — Professional Muay Thai Fighter & IT/Data Science Student
 
-[![Python](https://img.shields.io/badge/Python-3.x-blue)](https://www.python.org/)
-[![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-blue)](https://pandas.pydata.org/)
-[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-Machine%20Learning-orange)](https://scikit-learn.org/)
-
 ## Project Overview
 
-A data analytics and machine learning project exploring UFC fight data to investigate relationships between fighter characteristics, striking performance and fight outcomes.
+A data analytics, machine learning and computer vision project exploring UFC and combat sports data.
 
-The project combines exploratory data analysis, data cleaning, statistical investigation and machine learning to examine questions such as whether reach, stance and age are associated with performance.
+The project combines data cleaning, exploratory data analysis, feature engineering, machine learning and computer vision to investigate relationships between fighter characteristics, striking performance and fight outcomes.
 
 ### Technologies
 
@@ -18,10 +14,11 @@ The project combines exploratory data analysis, data cleaning, statistical inves
 - Pandas
 - NumPy
 - Matplotlib
-- Scikit-learn
+- Seaborn
 - Jupyter Notebook
-- Git & GitHub
-
+- Streamlit
+- Scikit-learn
+  
 ## Overview
 As a professional Muay Thai fighter, I wanted to see whether the striking
 and physical data behind fighters actually backs up conventional fight
